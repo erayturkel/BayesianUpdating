@@ -74,8 +74,8 @@ KLDivergence<-function(PosteriorMatrix,PriorVec){
   #Returns the KL Divergence matrix, between the prior and the posterior distribution matrix.
   #Each row is the KL-Divergence between the prior and the corresponding
   #posterior distribution (row) of the Posterior Matrix.
-  LogRatioMatrix<-log(t(PriorVec/t(PosteriorMatrix)))
-  return(LogRatioMatrix%*%PriorVec)
+  LogRatioMatrix<-t(log(t(PosteriorMatrix)/(PriorVec)))
+  return(t(t(rowSums(LogRatioMatrix*PosteriorMatrix))))
 }
 
 ExpectedCost<-function(ChannelMat,PriorVec,alpha){
@@ -178,3 +178,59 @@ GenerateChoice<-function(ConsumerMat,ChannelMat,alpha){
 }
 
 SimulateChoiceRandom(5,2,2,0.5)
+
+
+#2 by 2 by 2 example:
+
+#Can change these number of channels and states
+#Make sure to create valid channels
+numChannel=2
+numState=2
+#Make sure to check if the channel is valid:
+#Each column should sum up to 1.
+ChannelL<-matrix(c(0.9,0.1,0.5,0.5),nrow=numState,ncol=numState)
+#How to check column sums:
+colSums(ChannelL)
+ChannelR<-matrix(c(0.5,0.5,0.1,0.9),nrow=numState,ncol=numState)
+Channels<-c(ChannelL,ChannelR)
+ChannelList<-array(Channels,dim=c(numState,numState,numChannel))
+
+#Can create extra consumer, just change this number
+#Just put a vector with each element corresponding to 
+#prior beliefs on that state.
+numConsumer=2
+ConsumerL<-c(0.8,0.2)
+ConsumerR<-c(0.2,0.8)
+ConsumerList<-array(c(ConsumerL,ConsumerR),dim=c(1,numState,numConsumer))
+
+GenerateChoice(ConsumerList,ChannelList,0.5)
+
+
+
+
+
+
+#2 by 2 by 2 example:
+
+#Can change these number of channels and states
+#Make sure to create valid channels
+numChannel=2
+numState=2
+#Make sure to check if the channel is valid:
+#Each column should sum up to 1.
+ChannelL<-matrix(c(0.9,0.1,0.1,0.9),nrow=numState,ncol=numState)
+#How to check column sums:
+colSums(ChannelL)
+ChannelR<-matrix(c(0.5,0.5,0.3,0.7),nrow=numState,ncol=numState)
+Channels<-c(ChannelL,ChannelR)
+ChannelList<-array(Channels,dim=c(numState,numState,numChannel))
+
+#Can create extra consumer, just change this number
+#Just put a vector with each element corresponding to 
+#prior beliefs on that state.
+numConsumer=2
+ConsumerL<-c(0.9,0.1)
+ConsumerR<-c(0.4,0.6)
+ConsumerList<-array(c(ConsumerL,ConsumerR),dim=c(1,numState,numConsumer))
+
+GenerateChoice(ConsumerList,ChannelList,0.2)
