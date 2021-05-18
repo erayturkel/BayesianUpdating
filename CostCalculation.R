@@ -3,14 +3,14 @@ library(plotly)
 numState=2
 
 #Consumer Prior
-PriorVec<-c(0.9,0.1)
+PriorVec<-c(0.8,0.2)
 
 x<-seq(0.00001,0.99999,0.001)
 y<-seq(0.00001,0.99999,0.001)
 z<-matrix(nrow = length(x),ncol=length(y))
 
 i<-1
-a<-0.3 #The weight in the consumer's optimization problem: a is the weight on Expected SE.
+a<-0.8 #The weight in the consumer's optimization problem: a is the weight on Expected SE.
 #In other words, a is the weight on how much the consumer values precision.
 
 for(alpha in seq(0.00001,0.99999,0.001)){
